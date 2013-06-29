@@ -10,4 +10,7 @@
 
 @interface ColorViewController : UIViewController
 
+@property int fingers;
+@property (strong, nonatomic) UIColor *chosenColor;
+
 @end

@@ -21,8 +21,8 @@
     self.window.backgroundColor = [UIColor whiteColor];
     ColorViewController *colorVC = [[ColorViewController alloc] init];
     [self.window setRootViewController:colorVC];
-    
     [self.window makeKeyAndVisible];
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
     return YES;
 }
 
