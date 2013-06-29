@@ -22,6 +22,7 @@
 		63F3FA90177F0BD9006BD78F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63F3FA74177F0BD9006BD78F /* CoreData.framework */; };
 		63F3FA98177F0BD9006BD78F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 63F3FA96177F0BD9006BD78F /* InfoPlist.strings */; };
 		63F3FA9A177F0BD9006BD78F /* HueTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F3FA99177F0BD9006BD78F /* HueTests.m */; };
+		63F3FAA5177F0EF3006BD78F /* ColorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 63F3FAA4177F0C90006BD78F /* ColorViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,8 @@
 		63F3FA95177F0BD9006BD78F /* HueTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HueTests-Info.plist"; sourceTree = "<group>"; };
 		63F3FA97177F0BD9006BD78F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		63F3FA99177F0BD9006BD78F /* HueTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HueTests.m; sourceTree = "<group>"; };
+		63F3FAA3177F0C90006BD78F /* ColorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ColorViewController.h; sourceTree = "<group>"; };
+		63F3FAA4177F0C90006BD78F /* ColorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ColorViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,8 @@
 				63F3FA85177F0BD9006BD78F /* Images.xcassets */,
 				63F3FA82177F0BD9006BD78F /* Hue.xcdatamodeld */,
 				63F3FA77177F0BD9006BD78F /* Supporting Files */,
+				63F3FAA3177F0C90006BD78F /* ColorViewController.h */,
+				63F3FAA4177F0C90006BD78F /* ColorViewController.m */,
 			);
 			path = Hue;
 			sourceTree = "<group>";
@@ -248,6 +253,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				63F3FAA5177F0EF3006BD78F /* ColorViewController.m in Sources */,
 				63F3FA81177F0BD9006BD78F /* AppDelegate.m in Sources */,
 				63F3FA7D177F0BD9006BD78F /* main.m in Sources */,
 				63F3FA84177F0BD9006BD78F /* Hue.xcdatamodeld in Sources */,
