@@ -182,32 +182,6 @@
     self.groups = cache.groups;
 }
 
-/**
- Action for the show lights button
- */
-- (IBAction)showLights:(id)sender {
-    /***************************************************
-     Show the lights view controller for the lights
-     status
-     *****************************************************/
-    
-}
-
-/**
- Action for the show configuration button
- */
-- (IBAction)showBridgeConfig:(id)sender {
-    PHConfigurationViewController *configViewController = [[PHConfigurationViewController alloc] initWithNibName:@"PHConfigurationViewController"
-                                                                                                          bundle:[NSBundle mainBundle]
-                                                                                                          hueSDK:UIAppDelegate.phHueSDK
-                                                                                                        delegate:self];
-    
-    UINavigationController *configNavController = [[UINavigationController alloc] initWithRootViewController:configViewController];
-    configNavController.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    [self.navigationController presentViewController:configNavController animated:YES completion:NULL];
-}
-
 #pragma mark - Configuration view controller delegate
 
 - (void)closeConfigurationView:(PHConfigurationViewController *)configurationView {
@@ -225,34 +199,12 @@
  Notification receiver for successful local connection
  */
 - (void)localConnection {
-    /***************************************************
-     PHBridgeResourcesReader readBridgeResourcesCache,
-     returns the up to date PHBridgeResourcesCache status
-     Here it is used to display the bridge ipaddress
-     *****************************************************/
-    
-    // Read latest cache, update ip of bridge in interface
-    PHBridgeResourcesCache *cache = [PHBridgeResourcesReader readBridgeResourcesCache];
-    self.currentBridgeLabel.text = cache.bridgeConfiguration.ipaddress;
-    
-    // Set current time as last successful local heartbeat time
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterNoStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterMediumStyle];
-    /***************************************************
-     Displays the current time to show when the last
-     heartbeat was executed.
-     *****************************************************/
-    
-    self.lastLocalHeartbeatLabel.text = [dateFormatter stringFromDate:[NSDate date]];
 }
 
 /**
  Notification receiver for failed local connection
  */
 - (void)noLocalConnection {
-    // Update connection status label
-    self.lastLocalHeartbeatLabel.text = @"No connection";
 }
 
 @end

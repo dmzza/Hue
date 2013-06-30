@@ -12,15 +12,10 @@
 
 @interface ColorViewController : UIViewController <PHConfigurationViewControllerDelegate>
 
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *currentBridgeLabel;
-@property (unsafe_unretained, nonatomic) IBOutlet UILabel *lastLocalHeartbeatLabel;
 @property (nonatomic, strong) NSDictionary *lights;
 @property (nonatomic, strong) NSDictionary *groups;
 @property (strong, nonatomic) PHLightState *lightState;
 @property (strong, nonatomic) NSTimer *lightStateLoop;
-
-- (IBAction)showLights:(id)sender;
-- (IBAction)showBridgeConfig:(id)sender;
 
 @property int fingers;
 @property bool shouldSendLightState;
