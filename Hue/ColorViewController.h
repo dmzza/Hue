@@ -24,6 +24,7 @@
 
 @property int fingers;
 @property bool shouldSendLightState;
+@property bool lightsOn;
 @property (strong, nonatomic) UIColor *chosenColor;
 
 @end

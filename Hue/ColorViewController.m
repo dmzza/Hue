@@ -26,6 +26,7 @@
         self.view.multipleTouchEnabled = YES;
         self.fingers = 0;
         self.shouldSendLightState = NO;
+        self.lightsOn = YES;
         [self updateLights];
     }
     return self;
@@ -53,6 +54,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
     self.fingers = MAX(0, MIN(2, self.fingers-touches.count));
+    self.shouldSendLightState = YES;
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -96,9 +98,9 @@
     
     [self.lightState setBrightness:[NSNumber numberWithInt:((int)(brightness * 255))]];
     
-    //[self.lightState setTransitionTime:[NSNumber numberWithInt:1]];
+    [self.lightState setTransitionTime:[NSNumber numberWithInt:0]];
     
-    self.shouldSendLightState = YES;
+//    self.shouldSendLightState = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -118,16 +120,28 @@
      Subsequent checking of the Bridge Resources cache after the next heartbeat will
      show that changed settings have occurred.
      *****************************************************/
-    
+    id<PHBridgeSendAPI> bridgeSendAPI = [[[PHOverallFactory alloc] init] bridgeSendAPI];
     if (self.shouldSendLightState) {
         // Create a bridge send api, used for sending commands to bridge locally
-        id<PHBridgeSendAPI> bridgeSendAPI = [[[PHOverallFactory alloc] init] bridgeSendAPI];
         self.shouldSendLightState = NO;
+        self.lightsOn = YES;
         [bridgeSendAPI setLightStateForGroupWithId:@"0" lightState:self.lightState completionHandler:^(NSArray *errors) {
             if (errors.count > 0) {
                 self.shouldSendLightState = YES;
             }
         }];
+    } else if (self.lightsOn) {
+        PHLightState *lightState = [[PHLightState alloc] init];
+    
+        [lightState setOnBool:NO];
+        [lightState setTransitionTime:[NSNumber numberWithInt:10]];
+        self.lightsOn = NO;
+        [bridgeSendAPI setLightStateForGroupWithId:@"0" lightState:lightState completionHandler:^(NSArray *errors) {
+            if (errors.count > 0) {
+                self.lightsOn = YES;
+            }
+        }];
+        
     }
     
     
