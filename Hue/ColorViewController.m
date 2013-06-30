@@ -44,7 +44,22 @@
     [notificationManager registerObject:self withSelector:@selector(noLocalConnection) forNotification:NO_LOCAL_CONNECTION_NOTIFICATION];
     [notificationManager registerObject:self withSelector:@selector(updateLights) forNotification:LIGHTS_CACHE_UPDATED_NOTIFICATION];
     
+    self.bpmSlider = [[UISlider alloc] initWithFrame:CGRectMake(10, 100, 300, 40)];
+    self.bpmSlider.minimumValue = 2;
+    self.bpmSlider.maximumValue = 120;
+    [self.bpmSlider addTarget:self action:@selector(updateBPM) forControlEvents:UIControlEventValueChanged];
+    [self.view addSubview:self.bpmSlider];
+    
     self.lightStateLoop = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(sendLightState) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:self.lightStateLoop forMode:NSDefaultRunLoopMode];
+}
+
+- (void)updateBPM {
+    self.bpm = self.bpmSlider.value;
+    float interval = 60/self.bpm;
+    NSLog(@"bpm: %f ", self.bpmSlider.value);
+    [self.lightStateLoop invalidate];
+    self.lightStateLoop = [NSTimer timerWithTimeInterval:interval target:self selector:@selector(sendLightState) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:self.lightStateLoop forMode:NSDefaultRunLoopMode];
 }
 
