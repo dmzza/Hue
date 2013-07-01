@@ -67,7 +67,7 @@
      by the bridge into the Bridge Resources Cache
      *****************************************************/
     
-    [self enableLocalHeartbeat];
+    //[self enableLocalHeartbeat];
     
     return YES;
 }
@@ -99,7 +99,7 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Start heartbeat
-    [self enableLocalHeartbeat];
+    //[self enableLocalHeartbeat];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

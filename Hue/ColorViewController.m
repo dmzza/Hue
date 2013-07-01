@@ -25,6 +25,7 @@
         self.view.backgroundColor = self.chosenColor;
         self.view.multipleTouchEnabled = YES;
         self.fingers = 0;
+        self.bpm = 60;
         self.shouldSendLightState = NO;
         self.lightsOn = YES;
         [self updateLights];
@@ -50,8 +51,7 @@
     [self.bpmSlider addTarget:self action:@selector(updateBPM) forControlEvents:UIControlEventValueChanged];
     [self.view addSubview:self.bpmSlider];
     
-    self.lightStateLoop = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(sendLightState) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:self.lightStateLoop forMode:NSDefaultRunLoopMode];
+    self.lightStateLoop = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(sendLightState) userInfo:nil repeats:YES];
 }
 
 - (void)updateBPM {
@@ -59,8 +59,8 @@
     float interval = 60/self.bpm;
     NSLog(@"bpm: %f ", self.bpmSlider.value);
     [self.lightStateLoop invalidate];
-    self.lightStateLoop = [NSTimer timerWithTimeInterval:interval target:self selector:@selector(sendLightState) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:self.lightStateLoop forMode:NSDefaultRunLoopMode];
+    self.lightStateLoop = nil;
+    self.lightStateLoop = [NSTimer scheduledTimerWithTimeInterval:interval target:self selector:@selector(sendLightState) userInfo:nil repeats:YES];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
@@ -111,9 +111,9 @@
     
     [self.lightState setSaturation:[NSNumber numberWithInt:((int)(saturation * 255))]];
     
-    [self.lightState setBrightness:[NSNumber numberWithInt:((int)(brightness * 255))]];
+    //[self.lightState setBrightness:[NSNumber numberWithInt:((int)(brightness * 255))]];
     
-    [self.lightState setTransitionTime:[NSNumber numberWithInt:0]];
+    [self.lightState setTransitionTime:[NSNumber numberWithInt:20]];
     
 //    self.shouldSendLightState = YES;
 }
@@ -145,19 +145,36 @@
                 self.shouldSendLightState = YES;
             }
         }];
-    } else if (self.lightsOn) {
+    } else {
+        int brightness, transition;
+        if (!self.lightsOn) {
+            brightness = 254;
+            transition = 20;
+            self.lightsOn = YES;
+        } else {
+            brightness = 50;
+            transition = 20;
+            self.lightsOn = NO;
+        }
         PHLightState *lightState = [[PHLightState alloc] init];
     
-        [lightState setOnBool:NO];
-        [lightState setTransitionTime:[NSNumber numberWithInt:10]];
-        self.lightsOn = NO;
+        [lightState setBrightness:[NSNumber numberWithInt:brightness]];
+        [lightState setTransitionTime:[NSNumber numberWithInt:(int)(600/(self.bpm/2))]];
+        
         [bridgeSendAPI setLightStateForGroupWithId:@"0" lightState:lightState completionHandler:^(NSArray *errors) {
-            if (errors.count > 0) {
-                self.lightsOn = YES;
-            }
+//            if (errors.count > 0) {
+//                PHError *error = errors[0];
+//                NSLog(error.description);
+//            }
         }];
         
+        CGFloat h, s, b, a;
+        [self.chosenColor getHue:&h saturation:&s brightness:&b alpha:&a];
+        UIColor *adjustedBrightness = [UIColor colorWithHue:h saturation:s brightness:(float)(brightness/255.0) alpha:a];
+        self.view.backgroundColor = adjustedBrightness;
+        
     }
+    
     
     
 //    NSEnumerator *enumerator = [self.lights keyEnumerator];
